@@ -1,0 +1,56 @@
+server:
+  port: 8200
+  servlet:
+    context-path: /inventory
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: inventory
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecommerce_inventory?autoCreate=true
+    username: root
+    password: PasswordChanged@7
+    driver-class-name: com.mysql.cj.jdbc.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+resilience4j:
+  ratelimiter:
+    instances:
+      fetch:
+        limit-for-period: 9
+        limit-refresh-period:
+          seconds: 2
+        timeout-duration:
+          seconds: 2
+  circuitbreaker:
+    instances:
+      deleteProduct:
+        register-health-indicator: true
+        event-consumer-buffer-size: 10
+        sliding-window-size: 10
+        minimum-number-of-calls: 20
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state:
+          seconds: 30
+        failure-rate-threshold: 30
+  retry:
+    instances:
+      fetch:
+        maxAttempts: 5
+        wait-duration: 3s
+        enable-exponential-backoff: true
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

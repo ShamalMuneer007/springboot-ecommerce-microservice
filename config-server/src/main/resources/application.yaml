@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: application-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:/Users/shama/Desktop/Brocamp/Week-22/ecommerce-local-config-repo
+logging:
+  level:
+    web: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

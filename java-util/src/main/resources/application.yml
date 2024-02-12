@@ -1,0 +1,3 @@
+jwt:
+  jwtSecret: "YXNmYXNmYXNmZGZhc2RzZmNhdmNzdg=="
+  jwtExpiration: 2592000000

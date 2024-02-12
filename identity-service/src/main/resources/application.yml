@@ -1,0 +1,37 @@
+server:
+  port: 8100
+  servlet:
+    context-path: /user-identity
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+  application:
+    name: user-identity
+  jpa:
+    hibernate:
+      ddl-auto : update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_identity?autoCreate=true
+    username: root
+    password: PasswordChanged@7
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+
